@@ -21,7 +21,9 @@ class RegisterEvent extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
+        //Note to self: remove id from newEvent once moving to express endpoints.
         const newEvent = {
+            id: '3',
             name: e.target['event-name'].value
         }
         this.context.addEvent(newEvent)

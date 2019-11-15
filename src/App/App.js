@@ -137,7 +137,7 @@ class App extends Component {
 
           <Route
             exact
-            path='/add-athlete'
+            path='/add-athlete/:eventId'
             component={AddAthlete}
           />
 

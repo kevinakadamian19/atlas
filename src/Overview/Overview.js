@@ -24,13 +24,13 @@ class Overview extends Component {
         const {athletes} = this.context;
         if(athletes.length === 0) return null;
         const eventId = this.props.match.params.eventId;
+        console.log(eventId)
         //athletes is coming over as an array, and eventId is a 1 with typeof 'string'
         //filteredAthletes returns empty array. Next step figure out why; moving on for now.
-        const filteredAthletes = this.filteredAthletes(athletes, parseInt(eventId))
-      
+        const filteredAthletes = this.filteredAthletes(athletes, eventId)
         return (
             <div className='overview'>
-                <Lifts />
+                <Lifts event={eventId}/>
                     <section>
                         <h3>Athlete Table</h3>
                         <table className="athlete-list">
@@ -40,9 +40,10 @@ class Overview extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {athletes.map(athlete =>
+                                {filteredAthletes.map(athlete =>
                                     <tr key={athlete.id}>
                                         <Athletes
+                                            key={athlete.id}
                                             id={athlete.id}
                                             name={athlete.name}
                                         />
@@ -51,7 +52,7 @@ class Overview extends Component {
                             </tbody>
                             </table>
 
-                            <Link to='/add-athlete'>
+                            <Link to={`/add-athlete/${eventId}`}>
                             <button type="button">
                                 Register Athlete
                             </button>

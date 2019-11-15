@@ -5,6 +5,7 @@ import AtlasContext from '../AtlasContext'
 class Lift extends Component {
     static contextType =  AtlasContext;
 
+    //Note to self: Remove parseFloat once moving to express endpoints.
     calculateBestSquat(arr) {
          if(arr.length === 0) {
             return 'There are no squats currently registered.';
@@ -47,12 +48,24 @@ class Lift extends Component {
         return max;
     }
 
+    filteredLifts = () => {
+       const {athletes, lifts} = this.context;
+       console.log(athletes, lifts)
+       const eventId = this.props.event;
+       const filteredAthletes = athletes.filter(athlete => athlete.event === eventId)
+       //Filtered lifts returning empty value. May need to move remove lift component, and just move these functions back into Overview.
+       return lifts.filter(lifts => lifts.athlete === filteredAthletes.event);
+    }
+
     render() {
         const {lifts} = this.context;
         if(this.context.lifts.length === 0) return null;
-        const bestSquat = this.calculateBestSquat(lifts);
-        const bestBench = this.calculateBestBench(lifts);
-        const bestDeadlift = this.calculateBestDeadlift(lifts);
+        console.log(lifts)
+        const filteredLifts = this.filteredLifts(lifts)
+        console.log(filteredLifts)
+        const bestSquat = this.calculateBestSquat(filteredLifts);
+        const bestBench = this.calculateBestBench(filteredLifts);
+        const bestDeadlift = this.calculateBestDeadlift(filteredLifts);
         return(
             <div className='lift'>
                 <h3>

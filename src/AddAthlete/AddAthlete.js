@@ -33,15 +33,17 @@ class AddAthlete extends Component {
     handleSubmit = e => {
         e.preventDefault();
         const newAthlete = {
+            //adding Id for the sake of making the static app work.
+            //When updating context it doesn't add id because it's not self generating id like a POST request would.
+            id: '4',
             name: e.target['athlete-name'].value,
             age: e.target['athlete-age'].value,
             gender: e.target['athlete-gender'].value,
             weight: e.target['athlete-weight'].value,
-            event: this.props.match.params
+            event: this.props.match.params.eventId
         }
-        console.log(newAthlete.event)
         this.context.addAthlete(newAthlete)
-        this.props.history.push(`/events/${this.props.match.params}`)
+        this.props.history.push(`/events/${newAthlete.event}`)
         /*fetch(`${config.API_ENDPOINT}/athletes`, {
             method: 'POST',
             headers: {
