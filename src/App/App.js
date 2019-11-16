@@ -7,6 +7,7 @@ import RegisterEvent from '../RegisterEvent/RegisterEvent'
 import AddAthlete from '../AddAthlete/AddAthlete'
 import AddLifts from '../AddLifts/AddLifts'
 import SelectEvent from '../SelectEvent/SelectEvent'
+import Results from '../Results/Results'
 import dummyData from '../dummy-data';
 import './App.css';
 
@@ -102,13 +103,16 @@ class App extends Component {
       <AtlasContext.Provider value={contextValue}>
         <div className='App'>
           <nav role='navigation'>
-            Already registered?
+            
             <Link to='/select-event'>
-            <button type='button'>Choose Event</button>
+            <button 
+              type='button'>Select Event</button>
             </Link>
           </nav>
           <header>
+            <Link to='/'>
             <h1>Atlas</h1>
+            </Link>
           </header>
 
           <Route
@@ -143,8 +147,14 @@ class App extends Component {
 
           <Route
             exact
-            path='/add-lifts'
+            path='/add-lifts/:eventId'
             component={AddLifts}
+          />
+
+          <Route
+            exact
+            path='/results/:eventId'
+            component={Results}
           />
         </div>
       </AtlasContext.Provider>

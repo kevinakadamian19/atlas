@@ -97,16 +97,6 @@ class AddAthlete extends Component {
                         </div>
                         <div className='field'>
                             <label htmlFor='register-athlete'>
-                                Gender
-                            </label>
-                            <input 
-                                type='text'
-                                id='athlete-gender-input'
-                                name='athlete-gender'
-                            />
-                        </div>
-                        <div className='field'>
-                            <label htmlFor='register-athlete'>
                                 Weight Class
                             </label>
                             <input 
@@ -114,6 +104,19 @@ class AddAthlete extends Component {
                                 id='athlete-weight-input'
                                 name='athlete-weight'
                             />
+                        </div>
+                        <div className='field'>
+                            <label htmlFor='register-athlete'>
+                                Gender
+                            </label>
+                            <select
+                                id='athlete-gender-input'
+                                name='athlete-gender'
+                            >
+                                <option value={null}>...</option>
+                                <option value='female'>Female</option>
+                                <option value='male'>Male</option>
+                            </select>
                         </div>
                         <button type='submit'>
                             Register Athlete

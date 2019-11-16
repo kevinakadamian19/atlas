@@ -41,14 +41,16 @@ export default {
             'squat': '178',
             'bench': '102',
             'deadlift': '214',
-            'athlete': '1'
+            'athlete': '1',
+            'event': '1'
         },
         {
             'id': '2',
             'squat': '183',
             'bench': '128',
             'deadlift': '231',
-            'athlete': '2'
+            'athlete': '2',
+            'event': '2'
         }
     ]
 }

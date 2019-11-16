@@ -1,0 +1,15 @@
+{
+    "version": 2,
+    "alias": "kevindamianta-atlas-app",
+    "name": "atlas-app",
+    "routes": [
+        {
+          "src": "^/static/(.*)",
+          "dest": "/static/$1"
+        },
+        {
+          "src": ".*",
+          "dest": "/index.html"
+        }
+    ]
+}

@@ -50,10 +50,8 @@ class Lift extends Component {
 
     filteredLifts = () => {
        const {athletes, lifts} = this.context;
-       console.log(athletes, lifts)
        const eventId = this.props.event;
        const filteredAthletes = athletes.filter(athlete => athlete.event === eventId)
-       //Filtered lifts returning empty value. May need to move remove lift component, and just move these functions back into Overview.
        return lifts.filter(lifts => lifts.athlete === filteredAthletes.event);
     }
 
@@ -62,7 +60,6 @@ class Lift extends Component {
         if(this.context.lifts.length === 0) return null;
         console.log(lifts)
         const filteredLifts = this.filteredLifts(lifts)
-        console.log(filteredLifts)
         const bestSquat = this.calculateBestSquat(filteredLifts);
         const bestBench = this.calculateBestBench(filteredLifts);
         const bestDeadlift = this.calculateBestDeadlift(filteredLifts);

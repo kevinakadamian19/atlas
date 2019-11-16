@@ -34,7 +34,8 @@ class Athletes extends Component {
     render() {
         const {name} = this.props;
         return(
-            <>
+            <>  
+                
                 <td>{name}</td>
             </>
         )

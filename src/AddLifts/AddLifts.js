@@ -40,10 +40,11 @@ class AddLifts extends Component {
             squat: e.target['lift-squat'].value,
             bench: e.target['lift-bench'].value,
             deadlift: e.target['lift-deadlift'].value,
-            athlete: e.target['lift-athlete'].value
+            athlete: e.target['lift-athlete'].value,
+            event: this.props.match.params.eventId
         };
         this.context.addLifts(newLifts)
-        this.props.history.push(`/events/${this.props.match.params}`)
+        this.props.history.push(`/events/${newLifts.event}`)
         /*fetch(`${config.API_ENDPOINT}/lifts`, {
             method: 'POST',
             headers: {
@@ -117,11 +118,18 @@ class AddLifts extends Component {
             return `Numeric Entry is required for deadlift.`
         }
     }
+
+    filteredAthletes = (athletes, eventId) => {
+        return athletes.filter(athlete => athlete.event === eventId)
+    }
+
     render() {
         const {athletes} = this.context;
+        const eventId = this.props.match.params.eventId;
         const squatError= this.validateSquat();
         const benchError = this.validateBench();
         const deadliftError = this.validateDeadlift();
+        const filteredAthletes = this.filteredAthletes(athletes, eventId);
         return (
             <div className='register-lift'>
                 <h3>Register Lifts</h3>
@@ -182,7 +190,7 @@ class AddLifts extends Component {
                                 name='lift-athlete'
                             >
                                 <option value={null}>...</option>
-                                {athletes.map(athlete => 
+                                {filteredAthletes.map(athlete => 
                                     <option key={athlete.id} value={athlete.id}>
                                         {athlete.name}
                                     </option>    
