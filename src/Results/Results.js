@@ -13,11 +13,8 @@ class Results extends Component {
     }
     static contextType = AtlasContext;
 
-    maleAthletes = (athletes, eventId) => {
-        return athletes.filter(athlete => athlete.event === eventId && athlete.gender === 'male')
-    }
-    femaleAthletes = (athletes, eventId) => {
-        return athletes.filter(athlete => athlete.event === eventId && athlete.gender === 'female')
+    filteredAthletes = (athletes, eventId) => {
+        return athletes.filter(athlete => athlete.event === eventId)
     }
 
     totalWeight = (lifts) => {
@@ -32,14 +29,29 @@ class Results extends Component {
     
     }
 
+   /* calculateWilksScore = (arr) => {
+        for(let i = 0; i < arr.length; i++) {
+            if(arr[i].gender === 'male') {
+                const x = arr[i]
+                ((arr[i].total * 500) / (-216.0475144 + 16.2606339 + cx^2 +dx^3 + ex^4 + fx^5))
+            }
+            if(arr[i].gender === 'female') {
+
+            }
+        }
+    } */
+
     render() {
         const {athletes, lifts} = this.context;
         if(athletes.length === 0 || lifts.length === 0) return null;
         const eventId = this.props.match.params.eventId;
-        const maleAthletes = this.maleAthletes(athletes, eventId);
-        const femaleAthletes = this.femaleAthletes(athletes, eventId);
+        console.log(athletes)
+        const filteredAthletes = this.filteredAthletes(athletes, eventId);
         const totalWeight = this.totalWeight(lifts);
+        console.log(filteredAthletes);
         console.log(totalWeight);
+        //if lift.athlete matches athletes[i].id => athletes[i].total = lift.total
+
         return(
             <div className='results'>
 

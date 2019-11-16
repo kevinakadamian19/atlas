@@ -57,12 +57,12 @@ class Overview extends Component {
        return max;
    }
 
-   filteredLifts = (lifts, eventId) => {
-        return lifts.filter(lift => lift.event === eventId);
+   filteredAthletes = (athletes, eventId) => {
+    return athletes.filter(athlete => athlete.event === eventId)
     }
 
-    filteredAthletes = (athletes, eventId) => {
-        return athletes.filter(athlete => athlete.event === eventId)
+   filteredLifts = (lifts, eventId) => {
+        return lifts.filter(lift => lift.event === eventId);
     }
 
     render() {
