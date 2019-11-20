@@ -47,12 +47,19 @@ class Results extends Component {
     }
 
     determineWinner = (obj) => {
-            if(obj.length === 0) {
-                return ;
-            }
-            if(obj.length >= 1) {
-                Object.keys(obj).reduce((a,b) => obj.a > obj.b ? a : b)
-            }
+        console.log(obj)
+    //    Object.keys(obj).reduce(function(a,b) {
+    //        return obj[a] > obj[b] ? a : b;
+    //    })
+        if(Object.keys(obj).length === 0) {
+            return;
+        }
+        if(Object.keys(obj).length >= 1) {
+            return Object.keys(obj).reduce(function(a,b) {
+                return obj[a] > obj[b] ? a : b;
+            })
+        }
+          
     }
    
 
@@ -61,11 +68,9 @@ class Results extends Component {
         const eventId = this.props.match.params.eventId;
         const filteredAthletes = this.filteredAthletes(athletes, eventId);
         const calculateScore = this.calculateWilksScore(filteredAthletes);
-        console.log(calculateScore)
-        const winner = this.determineWinner(calculateScore)
-        console.log(winner)
-        //if lift.athlete matches athletes[i].id => athletes[i].total = lift.total
 
+        const winner = this.determineWinner(calculateScore)
+        console.log('winner: ', winner);
         return(
             <div className='results'>
                 <section>
