@@ -41,6 +41,7 @@ export default {
             'squat': '178',
             'bench': '102',
             'deadlift': '214',
+            'total': '494',
             'athlete': '1',
             'event': '1'
         },
@@ -49,8 +50,18 @@ export default {
             'squat': '183',
             'bench': '128',
             'deadlift': '231',
+            'total': '542',
             'athlete': '2',
             'event': '2'
+        },
+        {
+            'id': '3',
+            'squat': '88',
+            'bench': '68',
+            'deadlift': '136',
+            'total': '292',
+            'athlete': '3',
+            'event': '1'
         }
     ]
 }

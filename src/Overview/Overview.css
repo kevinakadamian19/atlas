@@ -1,6 +1,13 @@
-.overview tbody{
+.lift-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.athlete-list {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
+  }

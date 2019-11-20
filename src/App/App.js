@@ -8,24 +8,59 @@ import AddAthlete from '../AddAthlete/AddAthlete'
 import AddLifts from '../AddLifts/AddLifts'
 import SelectEvent from '../SelectEvent/SelectEvent'
 import Results from '../Results/Results'
-import dummyData from '../dummy-data';
+import data from '../dummy-data';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      events: [],
-      athletes: [],
-      lifts: []
+      events: {},
+      athletes: {},
+      lifts: {}
     }
   }
 
   componentDidMount() {
+    // assuming all data has come back, and placed into one object, with events, athletes, and lifts keys and corresponding arrays of objects 
+    // fetch events, athletes, and lifts independantly, create an object as above, then normalize that object as below then can update state
+    const events = data.events.reduce((acc, obj) => {
+      obj.athletes = data.athletes.reduce((acc, athlete) => {
+        if (athlete.event === obj.id) {
+          acc.push(athlete.id)
+        }
+        return acc;
+      }, []);
+      obj.lifts = data.lifts.reduce((acc, lift) => {
+        if (lift.event === obj.id) {
+          acc.push(lift.id)
+        }
+        return acc;
+      }, []);
+    
+      acc[obj.id] = obj;
+      return acc;
+    }, {})
+    
+    
+    // normalize athletes 
+    const athletes = data.athletes.reduce((acc, obj) => {
+      obj.lifts = data.lifts.filter(lift => lift.athlete === obj.id)
+      acc[obj.id] = obj;
+      return acc;
+    }, {})
+    
+    
+    // normalize lifts
+    const lifts = data.lifts.reduce((acc,obj) => {
+      acc[obj.id] = obj;
+      return acc;
+    }, {})
+
     this.setState({
-      events: dummyData.events,
-      athletes: dummyData.athletes,
-      lifts: dummyData.lifts
+      events: events,
+      athletes: athletes,
+      lifts: lifts
     })
     /*Promise.all([
       fetch(`${config.API_ENDPOINT}/events`)
@@ -49,6 +84,9 @@ class App extends Component {
       ])
     })
     .then((events, athletes, lifts) => {
+
+    })
+    .then((events, athletes, lifts) => {
       this.setState({events, athletes, lifts})
     })
     .catch(error => {
@@ -58,28 +96,28 @@ class App extends Component {
 
   handleAddEvent = event => {
     this.setState({
-      events: [
+      events: {
         ...this.state.events,
         event
-      ]
+      }
     })
   }
 
   handleAddAthlete = athlete => {
     this.setState({
-      athletes: [
+      athletes: {
         ...this.state.athletes,
         athlete
-      ]
+      }
     })
   }
 
   handleAddLifts = lift => {
     this.setState({
-      lifts: [
+      lifts: {
         ...this.state.lifts,
         lift
-      ]
+      }
     })
   }
 
@@ -103,10 +141,9 @@ class App extends Component {
       <AtlasContext.Provider value={contextValue}>
         <div className='App'>
           <nav role='navigation'>
-            
             <Link to='/select-event'>
             <button 
-              type='button'>Select Event</button>
+              type='button'>Select Existing Event</button>
             </Link>
           </nav>
           <header>

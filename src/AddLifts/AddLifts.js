@@ -21,6 +21,10 @@ class AddLifts extends Component {
             athlete: {
                 value: '',
                 touched: false
+            },
+            total: {
+                value: '',
+                touched: false
             }
         }
     }
@@ -34,6 +38,13 @@ class AddLifts extends Component {
     }
     static contextType = AtlasContext;
 
+    totalLifts = () => {
+        const a = parseInt(this.state.squat.value)
+        const b = parseInt(this.state.bench.value)
+        const c = parseInt(this.state.deadlift.value)
+        return a + b + c;
+    }
+
     handleSubmit = e => {
         e.preventDefault();
         const newLifts = {
@@ -41,8 +52,10 @@ class AddLifts extends Component {
             bench: e.target['lift-bench'].value,
             deadlift: e.target['lift-deadlift'].value,
             athlete: e.target['lift-athlete'].value,
-            event: this.props.match.params.eventId
+            event: this.props.match.params.eventId,
+            total: this.totalLifts()
         };
+        console.log(newLifts)
         this.context.addLifts(newLifts)
         this.props.history.push(`/events/${newLifts.event}`)
         /*fetch(`${config.API_ENDPOINT}/lifts`, {
@@ -120,7 +133,7 @@ class AddLifts extends Component {
     }
 
     filteredAthletes = (athletes, eventId) => {
-        return athletes.filter(athlete => athlete.event === eventId)
+        return Object.values(athletes).filter(athlete => athlete.event === eventId)
     }
 
     render() {

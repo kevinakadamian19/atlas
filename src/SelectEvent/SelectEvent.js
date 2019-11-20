@@ -50,10 +50,12 @@ class SelectEvent extends Component {
 
     render() {
         const {events} = this.context;
+        const existingEvents = Object.values(events).map(event => 
+            <option key={event.id} value={event.id}>{event.name}</option>);
         return(
             <div className='select-event'>
                 <section>
-                    Register New Event
+                    Choose Existing Event
                     <form className='select-event-form' onSubmit={e => this.handleSubmit(e)}>
                         <div className='field'>
                             <label htmlFor='select-event'>
@@ -64,11 +66,7 @@ class SelectEvent extends Component {
                                 name='event-name'
                             >
                                 <option value={null}>...</option>
-                                {events.map(event => 
-                                    <option key={event.id} value={event.id}>
-                                        {event.name}
-                                    </option>    
-                                )}
+                                { existingEvents }
                             </select>
                         </div>
                       

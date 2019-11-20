@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 import AtlasContext from '../AtlasContext'
 
 class Results extends Component {
@@ -14,54 +13,65 @@ class Results extends Component {
     static contextType = AtlasContext;
 
     filteredAthletes = (athletes, eventId) => {
-        return athletes.filter(athlete => athlete.event === eventId)
+        return Object.values(athletes).filter(athlete => athlete.event === eventId)
     }
 
-    totalWeight = (lifts) => {
-        for(let i = 0; i < lifts.length; i++) {
-            const totalWeight = parseInt(lifts[i].squat) + parseInt(lifts[i].bench) + parseInt(lifts[i].deadlift)
-            lifts[i].total = totalWeight;
-        }
-        return lifts;
-    }
-
-    matchTotalWithAthlete = () => {
-    
-    }
-
-   /* calculateWilksScore = (arr) => {
-        for(let i = 0; i < arr.length; i++) {
-            if(arr[i].gender === 'male') {
-                const x = arr[i]
-                ((arr[i].total * 500) / (-216.0475144 + 16.2606339 + cx^2 +dx^3 + ex^4 + fx^5))
+    calculateWilksScore = (obj) => {
+        const athletes = Object.values(obj)
+        const results = {}
+        for(let i = 0; i < athletes.length; i++) {
+            if(athletes[i].gender === 'male') {
+                const x = athletes[i].weight;
+                const a = -216.0475144;
+                const b = 16.2606339 * x;
+                const c = -0.002388645 * x;
+                const d = -0.00113732 * x;
+                const e = 0.00000701863 * x;
+                const f = -0.00000001291 * x;
+                const wilksScore = (athletes[i].lifts[0].total * 500) / (a + b + Math.pow(c,2) + Math.pow(d, 3) + Math.pow(e,4) + Math.pow(f, 5));
+                results[athletes[i].name] = wilksScore;
             }
-            if(arr[i].gender === 'female') {
-
+            if(athletes[i].gender === 'female') {
+                const x = athletes[i].weight;
+                const a = 594.31747775582;
+                const b = -27.23842536447 * x;
+                const c = 0.82112226871 * x;
+                const d = -0.00930733913 * x;
+                const e = 0.00004731582 * x;
+                const f = -0.00000009054 * x;
+                const wilksScore = (athletes[i].lifts[0].total * 500) / (a + b + Math.pow(c,2) + Math.pow(d, 3) + Math.pow(e,4) + Math.pow(f, 5));
+                results[`${athletes[i].name}`] = wilksScore;
             }
         }
-    } */
+        return results;
+    }
+
+    determineWinner = (obj) => {
+            if(obj.length === 0) {
+                return ;
+            }
+            if(obj.length >= 1) {
+                Object.keys(obj).reduce((a,b) => obj.a > obj.b ? a : b)
+            }
+    }
+   
 
     render() {
-        const {athletes, lifts} = this.context;
-        if(athletes.length === 0 || lifts.length === 0) return null;
+        const {athletes} = this.context;
         const eventId = this.props.match.params.eventId;
-        console.log(athletes)
         const filteredAthletes = this.filteredAthletes(athletes, eventId);
-        const totalWeight = this.totalWeight(lifts);
-        console.log(filteredAthletes);
-        console.log(totalWeight);
+        const calculateScore = this.calculateWilksScore(filteredAthletes);
+        console.log(calculateScore)
+        const winner = this.determineWinner(calculateScore)
+        console.log(winner)
         //if lift.athlete matches athletes[i].id => athletes[i].total = lift.total
 
         return(
             <div className='results'>
-
                 <section>
                     <h3>Congratulations!</h3>
-                    <div className='male-results'>
-
-                    </div>
-                    <div className='female-results'>
-                        
+                    <div className='winner'>
+                       {winner}
                     </div>
 
                 </section>

@@ -1,5 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Alata|Cinzel+Decorative:900|Roboto+Condensed&display=swap');
+
 * {
   box-sizing: border-box;
+}
+
+.App {
+  font-family: 'Alata', sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cinzel Decorative', cursive;
 }
 
 body {
@@ -44,13 +56,14 @@ section {
   background-color: #bbb;
 }
 
-.athlete-list {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 section:nth-child(even) {
   background-color: #ddd;
+}
+
+button {
+  font-family: 'Alata', sans-serif;;
+}
+
+select, option {
+  font-family: 'Roboto Condensed', sans-serif;
 }

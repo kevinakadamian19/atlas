@@ -1,54 +1,27 @@
-export const filteredAthletes = (athletes, eventId) =>
-    athletes.filter(athlete => athlete.event === eventId)
-
-
-export const calculateBestSquat = (arr) => {
-    if(arr.length === 0) {
-       return 'There are no squats currently registered.';
-   }
-   let completed = [];
-   for(let i = 0; i < arr.length; i++) {
-       completed.push(parseFloat(arr[i].squat))
-   }
-   const max = completed.reduce(function(a,b) {
-       return Math.max(a,b);
-   })
-   return max;
-}
-
-export const calculateBestBench(arr) {
-  if(arr.length === 0) {
-       return 'There are no bench presses currently registered';
-   }
-   let completed = [];
-   for(let i = 0; i < arr.length; i++) {
-       completed.push(arr[i].bench)
-   }
-   const max = completed.reduce(function(a,b) {
-       return Math.max(a,b);
-   })
-   return max;
-}
-
-export const calculateBestDeadlift(arr) {
-   if(arr.length === 0) {
-       return 'THere are no deadlifts currently registered.';
-   }
-   let completed = [];
-   for(let i = 0; i < arr.length; i++) {
-       completed.push(arr[i].deadlift)
-   }
-   const max = completed.reduce(function(a,b) {
-       return Math.max(a,b);
-   })
-   return max;
-}
-
-export default filteredLifts = () => {
-  const {athletes, lifts} = this.context;
-  console.log(athletes, lifts)
-  const eventId = this.props.event;
-  const filteredAthletes = athletes.filter(athlete => athlete.event === eventId)
-  //Filtered lifts returning empty value. May need to move remove lift component, and just move these functions back into Overview.
-  return lifts.filter(lifts => lifts.athlete === filteredAthletes.event);
+export const calculateWilksScore = (obj) => {
+    for(let i = 0; i < obj.length; i++) {
+        if(obj.i.gender === 'male') {
+            const x = obj.i.weight;
+            const a = -216.0475144;
+            const b = 16.2606339 * x;
+            const c = -0.002388645 * x;
+            const d = -0.00113732 * x;
+            const e = 0.00000701863 * x;
+            const f = -0.00000001291 * x;
+            const wilksScore = (obj.i.lifts[0].total * 500) / (a + b + Math.pow(c,2) + Math.pow(d, 3) + Math.pow(e,4) + Math.pow(f, 5));
+            obj.i.score = wilksScore;
+        }
+        if(obj[i].gender === 'female') {
+            const x = obj.i.weight;
+            const a = 594.31747775582;
+            const b = -27.23842536447 * x;
+            const c = 0.82112226871 * x;
+            const d = -0.00930733913 * x;
+            const e = 0.00004731582 * x;
+            const f = -0.00000009054 * x;
+            const wilksScore = (obj.i.lifts[0].total * 500) / (a + b + Math.pow(c,2) + Math.pow(d, 3) + Math.pow(e,4) + Math.pow(f, 5));
+            obj.i.score = wilksScore
+        }
+        return obj;
+    }
 }
