@@ -68,7 +68,6 @@ class Results extends Component {
         const eventId = this.props.match.params.eventId;
         const filteredAthletes = this.filteredAthletes(athletes, eventId);
         const calculateScore = this.calculateWilksScore(filteredAthletes);
-
         const winner = this.determineWinner(calculateScore)
         console.log('winner: ', winner);
         return(
