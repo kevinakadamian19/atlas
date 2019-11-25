@@ -32,10 +32,21 @@ class Athletes extends Component {
     }
 
     render() {
-        const {name} = this.props;
+        const {name, gender, weight} = this.props;
         return(
             <>  
                 <td>{name}</td>
+                <td>{gender}</td>
+                <td>{weight} kg</td>
+                <td>
+                    <button
+                        className='athlete-delete'
+                        type='button'
+                        onClick={e => this.handleClickDelete(e)}
+                    >
+                        X
+                    </button>
+                </td>
             </>
         )
     }

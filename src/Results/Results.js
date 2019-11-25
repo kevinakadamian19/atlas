@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
+import { Link } from 'react-router-dom'
 import AtlasContext from '../AtlasContext'
+import AthleteInfo from '../AthleteInfo/AthleteInfo'
+import './Results.css'
 
 class Results extends Component {
     static defaultProps = {
@@ -47,12 +50,15 @@ class Results extends Component {
     }
 
     determineWinner = (obj) => {
-            if(obj.length === 0) {
-                return ;
-            }
-            if(obj.length >= 1) {
-                Object.keys(obj).reduce((a,b) => obj.a > obj.b ? a : b)
-            }
+        if(Object.keys(obj).length === 0) {
+            return;
+        }
+        if(Object.keys(obj).length >= 1) {
+            return Object.keys(obj).reduce(function(a,b) {
+                return obj[a] > obj[b] ? a : b;
+            })
+        }
+          
     }
    
 
@@ -61,23 +67,59 @@ class Results extends Component {
         const eventId = this.props.match.params.eventId;
         const filteredAthletes = this.filteredAthletes(athletes, eventId);
         const calculateScore = this.calculateWilksScore(filteredAthletes);
-        console.log(calculateScore)
         const winner = this.determineWinner(calculateScore)
-        console.log(winner)
-        //if lift.athlete matches athletes[i].id => athletes[i].total = lift.total
-
         return(
-            <div className='results'>
-                <section>
-                    <h3>Congratulations!</h3>
-                    <div className='winner'>
-                       {winner}
+            <div className='page'>
+              <nav className='nav-bar'>
+                    <h1>Atlas</h1>
+                    <div className='nav-buttons'>
+                        <Link to='/'>
+                            <button type='button'>
+                                Home
+                            </button>
+                        </Link>
+                        <Link to='/event'>
+                            <button type='button'>
+                                Events
+                            </button>
+                        </Link>
                     </div>
+                </nav>
+                <div className='winner'>
+                    <h2>Congratulations!</h2>
+                    <h4>The winner of the competition is: </h4>
+                    {winner}
+                </div>
+                <table className="result-list">
+                        <thead>
+                            <tr>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Weight Class</th>
+                            <th>Total Lifted</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredAthletes.map(athlete =>
+                                <tr key={athlete.id}>
+                                     <AthleteInfo
+                                        key={athlete.id}
+                                        id={athlete.id}
+                                        name={athlete.name}
+                                        gender={athlete.gender}
+                                        weight={athlete.weight}
+                                        total={athlete.lifts[0].total}
+                                    />
+                                </tr>
+                                )}
+                        </tbody>
+                        </table>
 
-                </section>
+                
                 <button
                     tag='button'
                     role='link'
+                    className='results-button'
                     onClick={() => this.props.history.goBack()}
                 >
                     Return

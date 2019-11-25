@@ -71,13 +71,60 @@ class Overview extends Component {
         const bestDeadlift = this.calculateBestDeadlift(filteredLifts);
         const filteredAthletes = this.filteredAthletes(athletes, eventId)
         return (
-            <div className='overview'>
-                <section>
-                    <h2>Athletes</h2>
+            <div className='page'>
+                <nav className='nav-bar'>
+                    <h1>Atlas</h1>
+                    <div className='nav-buttons'>
+                        <Link to='/'>
+                            <button type='button'>
+                                Home
+                            </button>
+                        </Link>
+                        <Link to='/event'>
+                            <button type='button'>
+                                Events
+                            </button>
+                        </Link>
+                    </div>
+                </nav>
+                <div className='banner2'></div>
+                <header>
+                    <h2>Best Attempts</h2>
+                    <table className= "lift-table">
+                        <thead>
+                            <tr>
+                                 <th>Squat</th>
+                                <th>Bench</th>
+                                <th>Deadlift </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td className='squat-icon'></td>
+                                <td className='bench-icon'></td>
+                                <td className='deadlift-icon'></td>
+                            </tr>
+                            <tr>
+                                <td>{bestSquat} kgs</td>
+                                <td>{bestBench} kgs</td>
+                                <td>{bestDeadlift} kgs</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <Link to={`/results/${eventId}`}>
+                            <button type='button'>
+                                Results
+                            </button>
+                    </Link>
+                </header>
+                <h2>Athletes</h2>
                     <table className="athlete-list">
                         <thead>
                             <tr>
-                            <th></th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Weight Class</th>
+                            <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,49 +134,25 @@ class Overview extends Component {
                                         key={athlete.id}
                                         id={athlete.id}
                                         name={athlete.name}
+                                        weight={athlete.weight}
+                                        gender={athlete.gender}
                                     />
                                 </tr>
                                 )}
                         </tbody>
                         </table>
-
+                    <div className='overview-buttons'>
                         <Link to={`/add-athlete/${eventId}`}>
-                        <button type="button">
-                            Register Athlete
-                        </button>
+                            <button type="button">
+                                Register Athlete
+                            </button>
                         </Link>
-                </section>
-                <section>
-                    <h2> Completed Attempts</h2>
-                    <table className= "lift-table">
-                        <thead>
-                            <tr>
-                                <th>Squat</th>
-                                <th>Bench Press</th>
-                                <th>Deadlift </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{bestSquat} kgs</td>
-                                <td>{bestBench} kgs</td>
-                                <td>{bestDeadlift} kgs</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <Link to={`/add-lifts/${eventId}`}>
-                        <button type='submit'>
-                            Submit Lifts
-                        </button>
-                    </Link>
-                </section>
-                <footer>
-                    <Link to={`/results/${eventId}`}>
-                        <button type='button'>
-                            View Results
-                        </button>
-                    </Link>
-                </footer>
+                        <Link to={`/add-lifts/${eventId}`}>
+                            <button type='submit'>
+                                Submit Lifts
+                            </button>
+                        </Link>
+                    </div>
             </div>
         )
     }

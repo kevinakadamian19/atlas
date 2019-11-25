@@ -1,25 +1,25 @@
-.register-athlete-form {
+.register-lift-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 15px;
 }
 
-.register-athlete-form label {
+.register-lift-form label {
     display: block;
     text-align: left;
 }
 
-.register-athlete-form input {
+.register-lift-form input {
     width: 20em;
     height: 3em;
 }
 
-.register-athlete-form select {
+.register-lift-form select {
     width: 13em;
     height: 2em;
 }
 
-.register-athlete-form button {
+.register-lift-form button {
     margin-top: 15px;
 }

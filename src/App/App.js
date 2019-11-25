@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import {Route, Link} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
+import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import AtlasContext from '../AtlasContext'
 import GetStarted from '../GetStarted/GetStarted'
 import Overview from '../Overview/Overview'
-import RegisterEvent from '../RegisterEvent/RegisterEvent'
+import EventScreen from '../EventScreen/EventScreen'
 import AddAthlete from '../AddAthlete/AddAthlete'
 import AddLifts from '../AddLifts/AddLifts'
-import SelectEvent from '../SelectEvent/SelectEvent'
 import Results from '../Results/Results'
 import data from '../dummy-data';
 import './App.css';
@@ -84,9 +84,37 @@ class App extends Component {
       ])
     })
     .then((events, athletes, lifts) => {
+      const events = data.events.reduce((acc, obj) => {
+        obj.athletes = data.athletes.reduce((acc, athlete) => {
+          if (athlete.event === obj.id) {
+            acc.push(athlete.id)
+          }
+          return acc;
+        }, []);
+        obj.lifts = data.lifts.reduce((acc, lift) => {
+          if (lift.event === obj.id) {
+            acc.push(lift.id)
+          }
+          return acc;
+        }, []);
+      
+        acc[obj.id] = obj;
+        return acc;
+      }, {})
+    
+    // normalize athletes 
+        const athletes = data.athletes.reduce((acc, obj) => {
+          obj.lifts = data.lifts.filter(lift => lift.athlete === obj.id)
+          acc[obj.id] = obj;
+          return acc;
+        }, {})
+    
+    // normalize lifts
+        const lifts = data.lifts.reduce((acc,obj) => {
+          acc[obj.id] = obj;
+          return acc;
+        }, {})
 
-    })
-    .then((events, athletes, lifts) => {
       this.setState({events, athletes, lifts})
     })
     .catch(error => {
@@ -127,6 +155,49 @@ class App extends Component {
     })
   }
 
+  renderRoutes() {
+    return (
+      <>
+
+                <Route
+                  exact
+                  path='/'
+                  component={GetStarted}
+                />
+
+                <Route
+                  exact
+                  path='/event'
+                  component={EventScreen}
+                />
+
+                <Route
+                  exact
+                  path='/events/:eventId'
+                  component={Overview}
+                />
+
+                <Route
+                  exact
+                  path='/add-athlete/:eventId'
+                  component={AddAthlete}
+                />
+
+                <Route
+                  exact
+                  path='/add-lifts/:eventId'
+                  component={AddLifts}
+                />
+
+                <Route
+                  exact
+                  path='/results/:eventId'
+                  component={Results}
+                />
+      </>
+    )
+  }
+
   render() {
     const contextValue = {
       events: this.state.events,
@@ -139,60 +210,20 @@ class App extends Component {
     }
     return (
       <AtlasContext.Provider value={contextValue}>
-        <div className='App'>
-          <nav role='navigation'>
-            <Link to='/select-event'>
-            <button 
-              type='button'>Select Existing Event</button>
-            </Link>
-          </nav>
-          <header>
-            <Link to='/'>
-            <h1>Atlas</h1>
-            </Link>
-          </header>
-
-          <Route
-            exact
-            path='/select-event'
-            component={SelectEvent}
-          />
-
-          <Route
-            exact
-            path='/'
-            component={GetStarted}
-          />
-
-          <Route
-            exact
-            path='/register-event'
-            component={RegisterEvent}
-          />
-
-          <Route
-            exact
-            path='/events/:eventId'
-            component={Overview}
-          />
-
-          <Route
-            exact
-            path='/add-athlete/:eventId'
-            component={AddAthlete}
-          />
-
-          <Route
-            exact
-            path='/add-lifts/:eventId'
-            component={AddLifts}
-          />
-
-          <Route
-            exact
-            path='/results/:eventId'
-            component={Results}
-          />
+        <div className='page'>
+          <Route render={({location}) => (
+              <TransitionGroup>
+              <CSSTransition
+                key={location.key}
+                timeout={300}
+                classNames="fade"
+              >
+                <Switch location={location}>
+                  {this.renderRoutes()}
+                </Switch>
+              </CSSTransition>   
+            </TransitionGroup>
+          )} />
         </div>
       </AtlasContext.Provider>
     );

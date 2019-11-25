@@ -1,69 +1,53 @@
-@import url('https://fonts.googleapis.com/css?family=Alata|Cinzel+Decorative:900|Roboto+Condensed&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Alata|Cinzel+Decorative:900|Roboto+Condensed|Raleway&display=swap');
 
 * {
   box-sizing: border-box;
+  background-color: #0D0D0D;
 }
 
-.App {
-  font-family: 'Alata', sans-serif;
+.page {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  right: 0;
 }
 
-h1, h2, h3, h4 {
+h1, h3{
   font-family: 'Cinzel Decorative', cursive;
 }
 
-body {
-  font-family: "Open Sans",
-  sans-serif; 
+body, select, option {
+  font-family: 'Raleway', sans-serif;
   font-size: 20px;
-  color: #444;
   text-align: center;
+  color: #D9D9D9;
   line-height: 1.5;
 }
 
-nav,
-footer {
-  padding: 1% 0;
-  background-color: #aaa;
-}
-
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
-}
-
-
-header {
-  padding: 12% 0;
-}
-
-a:link {
-  text-decoration: none;
-}
-
-a {
-  color: black;
-}
-
-section {
-  min-height: 200px;
-  padding: 6% 0;
-  background-color: #bbb;
-}
-
-section:nth-child(even) {
-  background-color: #ddd;
-}
 
 button {
-  font-family: 'Alata', sans-serif;;
+  font-family: 'Raleway', sans-serif;
 }
 
-select, option {
-  font-family: 'Roboto Condensed', sans-serif;
+.fade-appear,
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+}
+
+.fade-appear-active,
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms linear 150ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transition: opacity 150ms linear;
 }

@@ -1,0 +1,94 @@
+.register-event-form {
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    width: 20em;
+    height: 3em;
+}
+
+.register-event-form label {
+    display: flex;
+    text-align: left;
+}
+
+.register-event-form button {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.select-event-form {
+    padding: 20px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    width: 20em;
+    height: 3em;
+}
+
+.select-event-form label {
+    display: flex;
+    text-align: left;
+}
+
+.select-event-form button {
+    margin-top: 15px;
+    width: 50%;
+}
+
+select, input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #262626;
+    background-image: none;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.select {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: #262626;
+    overflow: hidden;
+    border-radius: .25em;
+  }
+select, input {
+    flex: 1;
+    padding: 0 .5em;
+    color: #262626;
+    cursor: pointer;
+}
+
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #262626;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: .25s all ease;
+    -o-transition: .25s all ease;
+    transition: .25s all ease;
+}
+
+.select:hover::after {
+    color: #262626;
+}

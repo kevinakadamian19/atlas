@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Link } from 'react-router-dom'
 import AtlasContext from '../AtlasContext'
 import './AddAthlete.css'
 
@@ -67,12 +68,25 @@ class AddAthlete extends Component {
     }
     render() {
         return (
-            <div className='register-athlete'>
+            <div className='page'>
+                <nav className='nav-bar'>
+                    <h1>Atlas</h1>
+                    <div className='nav-buttons'>
+                        <Link to='/'>
+                            <button type='button'>
+                                Home
+                            </button>
+                        </Link>
+                        <Link to='/event'>
+                            <button type='button'>
+                                Events
+                            </button>
+                        </Link>
+                    </div>
+                </nav>
                 <header role="banner">
-                    <h1>Register</h1>
+                    <h1>Register Athlete</h1>
                 </header>
-
-                <section>
                     Complete this form to register for the meet.
                     <form className='register-athlete-form' onSubmit={e => this.handleSubmit(e)}>
                         <div className='field'>
@@ -122,7 +136,6 @@ class AddAthlete extends Component {
                             Register Athlete
                         </button>
                     </form>
-                </section>
             </div>
         )
     }

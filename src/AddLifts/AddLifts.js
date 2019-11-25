@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import AtlasContext from '../AtlasContext'
+import { Link } from 'react-router-dom'
 import ValidationError from '../ValidationError'
+import './AddLifts.css'
 
 class AddLifts extends Component {
     constructor(props) {
@@ -144,11 +146,41 @@ class AddLifts extends Component {
         const deadliftError = this.validateDeadlift();
         const filteredAthletes = this.filteredAthletes(athletes, eventId);
         return (
-            <div className='register-lift'>
+            <div className='page'>
+                <nav className='nav-bar'>
+                    <h1>Atlas</h1>
+                    <div className='nav-buttons'>
+                        <Link to='/'>
+                            <button type='button'>
+                                Home
+                            </button>
+                        </Link>
+                        <Link to='/event'>
+                            <button type='button'>
+                                Events
+                            </button>
+                        </Link>
+                    </div>
+                </nav>
                 <h3>Register Lifts</h3>
-                <section>
                     Complete this form to register for the meet.
                     <form className='register-lift-form' onSubmit={e => this.handleSubmit(e)}>
+                    <div className='field'>
+                            <label htmlFor='register-lift'>
+                                Athlete
+                            </label>
+                            <select 
+                                id='lift-deadlift-input'
+                                name='lift-athlete'
+                            >
+                                <option value={null}>...</option>
+                                {filteredAthletes.map(athlete => 
+                                    <option key={athlete.id} value={athlete.id}>
+                                        {athlete.name}
+                                    </option>    
+                                )}
+                            </select>
+                        </div>
                         <div className='field'>
                             <label htmlFor='register-lift'>
                                 Squat
@@ -194,22 +226,6 @@ class AddLifts extends Component {
                                 <ValidationError message={deadliftError} />
                             )}
                         </div>
-                        <div className='field'>
-                            <label htmlFor='register-lift'>
-                                Athlete
-                            </label>
-                            <select 
-                                id='lift-deadlift-input'
-                                name='lift-athlete'
-                            >
-                                <option value={null}>...</option>
-                                {filteredAthletes.map(athlete => 
-                                    <option key={athlete.id} value={athlete.id}>
-                                        {athlete.name}
-                                    </option>    
-                                )}
-                            </select>
-                        </div>
                       
                         <button 
                             type='submit'
@@ -217,7 +233,6 @@ class AddLifts extends Component {
                                 Submit
                         </button>
                     </form>
-                </section>
             </div>
         )
     }

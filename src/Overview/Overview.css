@@ -1,13 +1,52 @@
-.lift-table {
+.nav-bar {
     display: flex;
-    flex-direction: column;
+    background-color: #0D0D0D;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    left: 15px;
+    width: 75%;
 }
 
+.nav-bar button{
+    font-size: 10px;
+}
+
+.overview-buttons {
+    margin-top: 30px;
+    display: inline-block;
+}
+
+.banner2 {
+    width: 75%;
+    height: 300px;
+    margin: 15px;
+    box-shadow: 0px 0px 10px 2px #8C857B; 
+    background-image: url('../bench.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.lift-table {
+    width: 500px;
+    align-self: center;
+}
+
+.lift-table tr{
+    display: grid;
+    grid-template-columns: 33% 34% 33%;
+}
 
 .athlete-list {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+    width: 500px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 18px;
+    align-self: center;
+    text-align: left;
+}
+
+.athlete-list tr{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
