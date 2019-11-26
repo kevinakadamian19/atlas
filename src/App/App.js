@@ -150,8 +150,11 @@ class App extends Component {
   }
 
   handleDeleteAthlete = athleteId => {
+    //id will not be string once we hook API. Remove the `${}`
+    const currentAthletes = this.state.athletes;
+    delete currentAthletes[`${athleteId}`]
     this.setState({
-      athletes: this.state.athletes.filter(athlete => athlete.id !== athleteId)
+      athletes: currentAthletes
     })
   }
 
@@ -206,7 +209,7 @@ class App extends Component {
       addAthlete: this.handleAddAthlete,
       addLifts: this.handleAddLifts,
       addEvent: this.handleAddEvent,
-      deleteAthlete: this.deleteAthlete
+      deleteAthlete: this.handleDeleteAthlete
     }
     return (
       <AtlasContext.Provider value={contextValue}>

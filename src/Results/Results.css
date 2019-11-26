@@ -1,8 +1,3 @@
-.results {
-    display: flex;
-    flex-direction: column;
-}
-
 .result-list {
     margin-top: 20px;
     width: 500px;
@@ -19,3 +14,6 @@
     grid-template-columns: 25% 25% 25% 25%;
  }
 
+.results-button {
+    margin-top: 50px;
+}
