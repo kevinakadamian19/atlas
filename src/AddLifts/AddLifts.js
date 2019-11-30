@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import AtlasContext from '../AtlasContext'
 import { Link } from 'react-router-dom'
 import ValidationError from '../ValidationError'
+import config from '../config'
 import './AddLifts.css'
 
 class AddLifts extends Component {
@@ -63,7 +64,8 @@ class AddLifts extends Component {
         /*fetch(`${config.API_ENDPOINT}/lifts`, {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `${config.API_KEY}`
             },
             body: JSON.stringify(newLifts)
         })

@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import config from '../config'
 import AtlasContext from '../AtlasContext'
 
 
@@ -12,7 +13,8 @@ class Athletes extends Component {
         /*fetch(`${config.API_ENDPOINT}/athletes/${athleteId}`. {
             method: 'DELETE',
             headers: {
-                'content-type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `${config.API_KEY}`
             }
         })
         .then(res => {

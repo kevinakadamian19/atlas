@@ -8,6 +8,8 @@ import EventScreen from '../EventScreen/EventScreen'
 import AddAthlete from '../AddAthlete/AddAthlete'
 import AddLifts from '../AddLifts/AddLifts'
 import Results from '../Results/Results'
+import SubmitFormError from '../SubmitFormError/SubmitFormError'
+import config from '../config'
 import data from '../dummy-data';
 import './App.css';
 
@@ -24,48 +26,56 @@ class App extends Component {
   componentDidMount() {
     // assuming all data has come back, and placed into one object, with events, athletes, and lifts keys and corresponding arrays of objects 
     // fetch events, athletes, and lifts independantly, create an object as above, then normalize that object as below then can update state
-    const events = data.events.reduce((acc, obj) => {
-      obj.athletes = data.athletes.reduce((acc, athlete) => {
-        if (athlete.event === obj.id) {
-          acc.push(athlete.id)
-        }
-        return acc;
-      }, []);
-      obj.lifts = data.lifts.reduce((acc, lift) => {
-        if (lift.event === obj.id) {
-          acc.push(lift.id)
-        }
-        return acc;
-      }, []);
+    // const events = data.events.reduce((acc, obj) => {
+    //   obj.athletes = data.athletes.reduce((acc, athlete) => {
+    //     if (athlete.event === obj.id) {
+    //       acc.push(athlete.id)
+    //     }
+    //     return acc;
+    //   }, []);
+    //   obj.lifts = data.lifts.reduce((acc, lift) => {
+    //     if (lift.event === obj.id) {
+    //       acc.push(lift.id)
+    //     }
+    //     return acc;
+    //   }, []);
     
-      acc[obj.id] = obj;
-      return acc;
-    }, {})
-    
-    
-    // normalize athletes 
-    const athletes = data.athletes.reduce((acc, obj) => {
-      obj.lifts = data.lifts.filter(lift => lift.athlete === obj.id)
-      acc[obj.id] = obj;
-      return acc;
-    }, {})
+    //   acc[obj.id] = obj;
+    //   return acc;
+    // }, {})
     
     
-    // normalize lifts
-    const lifts = data.lifts.reduce((acc,obj) => {
-      acc[obj.id] = obj;
-      return acc;
-    }, {})
+    // // normalize athletes 
+    // const athletes = data.athletes.reduce((acc, obj) => {
+    //   obj.lifts = data.lifts.filter(lift => lift.athlete === obj.id)
+    //   acc[obj.id] = obj;
+    //   return acc;
+    // }, {})
+    
+    
+    // // normalize lifts
+    // const lifts = data.lifts.reduce((acc,obj) => {
+    //   acc[obj.id] = obj;
+    //   return acc;
+    // }, {})
 
-    this.setState({
-      events: events,
-      athletes: athletes,
-      lifts: lifts
-    })
-    /*Promise.all([
-      fetch(`${config.API_ENDPOINT}/events`)
-      fetch(`${config.API_ENDPOINT}/athletes`)
-      fetch(`${config.API_ENDPOINT}/lifts`)
+    // this.setState({
+    //   events: events,
+    //   athletes: athletes,
+    //   lifts: lifts
+    // })
+    const options = {
+      method: 'GET',
+      headers: {
+        "Authorization": `${config.API_KEY}`,
+        "Content-Type": "application/json"
+        }
+      };
+
+      Promise.all([
+      fetch(`${config.API_ENDPOINT}/events`, options),
+      fetch(`${config.API_ENDPOINT}/athletes`, options),
+      fetch(`${config.API_ENDPOINT}/lifts`, options)
     ])
     .then(([eventsRes, athletesRes, liftsRes]) => {
       if(!eventsRes) {
@@ -84,14 +94,14 @@ class App extends Component {
       ])
     })
     .then((events, athletes, lifts) => {
-      const events = data.events.reduce((acc, obj) => {
-        obj.athletes = data.athletes.reduce((acc, athlete) => {
+      const event = events.reduce((acc, obj) => {
+        obj.athletes = athletes.reduce((acc, athlete) => {
           if (athlete.event === obj.id) {
             acc.push(athlete.id)
           }
           return acc;
         }, []);
-        obj.lifts = data.lifts.reduce((acc, lift) => {
+        obj.lifts = lifts.reduce((acc, lift) => {
           if (lift.event === obj.id) {
             acc.push(lift.id)
           }
@@ -103,23 +113,23 @@ class App extends Component {
       }, {})
     
     // normalize athletes 
-        const athletes = data.athletes.reduce((acc, obj) => {
-          obj.lifts = data.lifts.filter(lift => lift.athlete === obj.id)
+        const athlete = athletes.reduce((acc, obj) => {
+          obj.lifts = lifts.filter(lift => lift.athlete === obj.id)
           acc[obj.id] = obj;
           return acc;
         }, {})
     
     // normalize lifts
-        const lifts = data.lifts.reduce((acc,obj) => {
+        const lift = lifts.reduce((acc,obj) => {
           acc[obj.id] = obj;
           return acc;
         }, {})
 
-      this.setState({events, athletes, lifts})
+      this.setState({event, athlete, lift})
     })
     .catch(error => {
       console.error({error})
-    })*/
+    })
   }
 
   handleAddEvent = event => {
@@ -222,7 +232,9 @@ class App extends Component {
                 classNames="fade"
               >
                 <Switch location={location}>
-                  {this.renderRoutes()}
+                  <SubmitFormError>
+                    {this.renderRoutes()}
+                  </SubmitFormError>
                 </Switch>
               </CSSTransition>   
             </TransitionGroup>

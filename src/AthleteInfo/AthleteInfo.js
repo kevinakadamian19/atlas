@@ -13,7 +13,7 @@ class AthleteInfo extends Component {
                 <td>{name}</td>
                 <td>{gender}</td>
                 <td>{weight} kgs</td>
-                <td>{total}</td>
+                <td>{total} kgs</td>
             </>
         )
     }

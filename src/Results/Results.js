@@ -31,6 +31,7 @@ class Results extends Component {
                 const d = -0.00113732 * x;
                 const e = 0.00000701863 * x;
                 const f = -0.00000001291 * x;
+                console.log(athletes)
                 const wilksScore = (athletes[i].lifts[0].total * 500) / (a + b + Math.pow(c,2) + Math.pow(d, 3) + Math.pow(e,4) + Math.pow(f, 5));
                 results[athletes[i].name] = wilksScore;
             }

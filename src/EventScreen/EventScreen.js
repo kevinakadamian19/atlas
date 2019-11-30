@@ -37,7 +37,8 @@ class EventScreen extends Component {
         fetch(`${config.API_ENDPOINT}/events`, {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `${config.API_KEY}`
             },
             body: JSON.stringify(newEvent)
         })

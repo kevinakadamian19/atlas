@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import AtlasContext from '../AtlasContext'
+import config from '../config'
 import './AddAthlete.css'
 
 class AddAthlete extends Component {
@@ -36,7 +37,7 @@ class AddAthlete extends Component {
         const newAthlete = {
             //adding Id for the sake of making the static app work.
             //When updating context it doesn't add id because it's not self generating id like a POST request would.
-            id: '4',
+            id: '6',
             name: e.target['athlete-name'].value,
             age: e.target['athlete-age'].value,
             gender: e.target['athlete-gender'].value,
@@ -48,7 +49,8 @@ class AddAthlete extends Component {
         /*fetch(`${config.API_ENDPOINT}/athletes`, {
             method: 'POST',
             headers: {
-                'content-type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `${config.API_KEY}`
             },
             body: JSON.stringify(newAthlete)
         })
