@@ -55,6 +55,7 @@ class Overview extends Component {
    }
 
    filteredAthletes = (athletes, eventId) => {
+   
     return Object.values(athletes).filter(athlete => athlete.event === eventId)
     }
 
@@ -65,11 +66,11 @@ class Overview extends Component {
     render() {
         const {athletes, lifts} = this.context;
         const eventId = this.props.match.params.eventId;
-        const filteredLifts = this.filteredLifts(lifts, eventId)
+        const filteredAthletes = this.filteredAthletes(athletes, eventId)
+        const filteredLifts = this.filteredLifts(lifts, eventId);
         const bestSquat = this.calculateBestSquat(filteredLifts);
         const bestBench = this.calculateBestBench(filteredLifts);
         const bestDeadlift = this.calculateBestDeadlift(filteredLifts);
-        const filteredAthletes = this.filteredAthletes(athletes, eventId)
         return (
             <div className='page'>
                 <nav className='nav-bar'>

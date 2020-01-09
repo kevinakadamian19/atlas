@@ -10,60 +10,19 @@ import AddLifts from '../AddLifts/AddLifts'
 import Results from '../Results/Results'
 import SubmitFormError from '../SubmitFormError/SubmitFormError'
 import config from '../config'
-import data from '../dummy-data';
 import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      events: {},
-      athletes: {},
-      lifts: {}
+      event: {},
+      athlete: {},
+      lift: {}
     }
   }
 
   componentDidMount() {
-    // assuming all data has come back, and placed into one object, with events, athletes, and lifts keys and corresponding arrays of objects 
-    // fetch events, athletes, and lifts independantly, create an object as above, then normalize that object as below then can update state
-    // const events = data.events.reduce((acc, obj) => {
-    //   obj.athletes = data.athletes.reduce((acc, athlete) => {
-    //     if (athlete.event === obj.id) {
-    //       acc.push(athlete.id)
-    //     }
-    //     return acc;
-    //   }, []);
-    //   obj.lifts = data.lifts.reduce((acc, lift) => {
-    //     if (lift.event === obj.id) {
-    //       acc.push(lift.id)
-    //     }
-    //     return acc;
-    //   }, []);
-    
-    //   acc[obj.id] = obj;
-    //   return acc;
-    // }, {})
-    
-    
-    // // normalize athletes 
-    // const athletes = data.athletes.reduce((acc, obj) => {
-    //   obj.lifts = data.lifts.filter(lift => lift.athlete === obj.id)
-    //   acc[obj.id] = obj;
-    //   return acc;
-    // }, {})
-    
-    
-    // // normalize lifts
-    // const lifts = data.lifts.reduce((acc,obj) => {
-    //   acc[obj.id] = obj;
-    //   return acc;
-    // }, {})
-
-    // this.setState({
-    //   events: events,
-    //   athletes: athletes,
-    //   lifts: lifts
-    // })
     const options = {
       method: 'GET',
       headers: {
@@ -73,9 +32,9 @@ class App extends Component {
       };
 
       Promise.all([
-      fetch(`${config.API_ENDPOINT}/events`, options),
-      fetch(`${config.API_ENDPOINT}/athletes`, options),
-      fetch(`${config.API_ENDPOINT}/lifts`, options)
+      fetch(`${config.API_ENDPOINT}/api/events`, options),
+      fetch(`${config.API_ENDPOINT}/api/athletes`, options),
+      fetch(`${config.API_ENDPOINT}/api/lifts`, options)
     ])
     .then(([eventsRes, athletesRes, liftsRes]) => {
       if(!eventsRes) {
@@ -93,7 +52,7 @@ class App extends Component {
         liftsRes.json()
       ])
     })
-    .then((events, athletes, lifts) => {
+    .then(([events, athletes, lifts]) => {
       const event = events.reduce((acc, obj) => {
         obj.athletes = athletes.reduce((acc, athlete) => {
           if (athlete.event === obj.id) {
@@ -107,19 +66,14 @@ class App extends Component {
           }
           return acc;
         }, []);
-      
         acc[obj.id] = obj;
         return acc;
       }, {})
-    
-    // normalize athletes 
         const athlete = athletes.reduce((acc, obj) => {
           obj.lifts = lifts.filter(lift => lift.athlete === obj.id)
           acc[obj.id] = obj;
           return acc;
         }, {})
-    
-    // normalize lifts
         const lift = lifts.reduce((acc,obj) => {
           acc[obj.id] = obj;
           return acc;
@@ -135,7 +89,7 @@ class App extends Component {
   handleAddEvent = event => {
     this.setState({
       events: {
-        ...this.state.events,
+        ...this.state.event,
         event
       }
     })
@@ -144,7 +98,7 @@ class App extends Component {
   handleAddAthlete = athlete => {
     this.setState({
       athletes: {
-        ...this.state.athletes,
+        ...this.state.athlete,
         athlete
       }
     })
@@ -153,18 +107,17 @@ class App extends Component {
   handleAddLifts = lift => {
     this.setState({
       lifts: {
-        ...this.state.lifts,
+        ...this.state.lift,
         lift
       }
     })
   }
 
   handleDeleteAthlete = athleteId => {
-    //id will not be string once we hook API. Remove the `${}`
-    const currentAthletes = this.state.athletes;
-    delete currentAthletes[`${athleteId}`]
+    const currentAthletes = this.state.athlete;
+    delete currentAthletes[athleteId]
     this.setState({
-      athletes: currentAthletes
+      athlete: currentAthletes
     })
   }
 
@@ -180,7 +133,7 @@ class App extends Component {
 
                 <Route
                   exact
-                  path='/event'
+                  path='/events'
                   component={EventScreen}
                 />
 
@@ -213,14 +166,15 @@ class App extends Component {
 
   render() {
     const contextValue = {
-      events: this.state.events,
-      athletes: this.state.athletes,
-      lifts: this.state.lifts,
+      events: this.state.event,
+      athletes: this.state.athlete,
+      lifts: this.state.lift,
       addAthlete: this.handleAddAthlete,
       addLifts: this.handleAddLifts,
       addEvent: this.handleAddEvent,
       deleteAthlete: this.handleDeleteAthlete
     }
+    console.log(this.state)
     return (
       <AtlasContext.Provider value={contextValue}>
         <div className='page'>

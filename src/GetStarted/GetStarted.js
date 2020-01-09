@@ -7,7 +7,7 @@ class GetStarted extends Component {
         return(
             <div className='page'>
                     <h1>Atlas</h1>
-                    <Link to='/event'>
+                    <Link to='/events'>
                         <button type='button'>
                             Get Started
                         </button>

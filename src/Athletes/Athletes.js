@@ -9,8 +9,7 @@ class Athletes extends Component {
     handleClickDelete = e => {
         e.preventDefault();
         const athleteId = this.props.id;
-        this.context.deleteAthlete(athleteId);
-        /*fetch(`${config.API_ENDPOINT}/athletes/${athleteId}`. {
+        fetch(`${config.API_ENDPOINT}/api/athletes/${athleteId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,8 +28,6 @@ class Athletes extends Component {
         .catch(error => {
             console.error({error})
         })
-
-        */
     }
 
     render() {

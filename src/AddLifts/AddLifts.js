@@ -58,10 +58,7 @@ class AddLifts extends Component {
             event: this.props.match.params.eventId,
             total: this.totalLifts()
         };
-        console.log(newLifts)
-        this.context.addLifts(newLifts)
-        this.props.history.push(`/events/${newLifts.event}`)
-        /*fetch(`${config.API_ENDPOINT}/lifts`, {
+        fetch(`${config.API_ENDPOINT}/lifts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,7 +78,7 @@ class AddLifts extends Component {
         })
         .catch(error => {
             console.error({error})
-        })*/
+        })
     }
     handleUpdateSquat = squat => {
         this.setState({

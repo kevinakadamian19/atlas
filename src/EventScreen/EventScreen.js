@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import AtlasContext from '../AtlasContext'
 import ValidationError from '../ValidationError'
+import config from '../config'
 import './EventScreen.css'
 
 class EventScreen extends Component {
@@ -26,15 +27,10 @@ class EventScreen extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        //Note to self: remove id from newEvent once moving to express endpoints.
         const newEvent = {
-            id: '3',
             name: e.target['event-name'].value
         }
-        this.context.addEvent(newEvent)
-        this.props.history.push(`/events/${3}`)
-        /*
-        fetch(`${config.API_ENDPOINT}/events`, {
+        fetch(`${config.API_ENDPOINT}/api/events`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +51,6 @@ class EventScreen extends Component {
         .catch(error => {
             console.error({error})
         })
-        */
     }
 
     handleSelect = e => {
