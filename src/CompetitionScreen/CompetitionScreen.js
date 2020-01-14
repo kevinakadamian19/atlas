@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import AtlasContext from '../AtlasContext'
 import ValidationError from '../ValidationError'
 import config from '../config'
-import './EventScreen.css'
+import './CompetitionScreen.css'
 
-class EventScreen extends Component {
+class CompetitionScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -27,16 +27,16 @@ class EventScreen extends Component {
 
     handleSubmit = e => {
         e.preventDefault();
-        const newEvent = {
-            name: e.target['event-name'].value
+        const newCompetition = {
+            name: e.target['competition-name'].value
         }
-        fetch(`${config.API_ENDPOINT}/api/events`, {
+        fetch(`${config.API_ENDPOINT}/api/competitions`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `${config.API_KEY}`
             },
-            body: JSON.stringify(newEvent)
+            body: JSON.stringify(newCompetition)
         })
         .then(res => {
             if(!res.ok) {
@@ -44,9 +44,9 @@ class EventScreen extends Component {
             }
             return res.json()
         })
-        .then(event => {
-            this.context.addEvent(event)
-            this.props.history.push(`/events/${event.id}`)
+        .then(competition => {
+            this.context.addCompetition(competition)
+            this.props.history.push(`/competitions/${competition.id}`)
         })
         .catch(error => {
             console.error({error})
@@ -55,42 +55,42 @@ class EventScreen extends Component {
 
     handleSelect = e => {
         e.preventDefault();
-        const existingEvent = {
-            name: e.target['event-name'].value
+        const existingCompetition = {
+            name: e.target['competition-name'].value
         }
-        this.props.history.push(`/events/${existingEvent.name}`)
+        this.props.history.push(`/competitions/${existingCompetition.name}`)
     }
-    addEventName(event) {
-        this.setState({name: {value: event, touched: true}})
+    addCompetitionName(competition) {
+        this.setState({name: {value: competition, touched: true}})
     }
 
     selectOrRegister(choice) {
         this.setState({choice: {value: choice, touched: true}})
     }
 
-    validateEventName(fieldValue) {
+    validateCompetitionName(fieldValue) {
         const name = this.state.name.value.trim();
         if(name.length === 0) {
-            return 'Event name is required';
+            return 'Competition name is required';
         } else if(name.length < 3) {
-            return 'Event name must be at least 3 characters long';
+            return 'Competition name must be at least 3 characters long';
         }
     }
 
-    registerEvent = () => {
-        const nameError = this.validateEventName();
+    registerCompetition = () => {
+        const nameError = this.validateCompetitionName();
         return(
-            <form className='register-event-form' onSubmit={e => this.handleSubmit(e)}>
+            <form className='register-competition-form' onSubmit={e => this.handleSubmit(e)}>
                         <div className='field'>
-                            <label htmlFor='register-event'>
+                            <label htmlFor='register-competition'>
                                 Name
                             </label>
                             <input 
                                 type='text'
-                                id='event-name-input'
-                                name='event-name'
+                                id='competition-name-input'
+                                name='competition-name'
                                 className='select'
-                                onChange={e => this.addEventName(e.target.value)}
+                                onChange={e => this.addCompetitionName(e.target.value)}
                             />
                             {this.state.name.touched && (
                                 <ValidationError message={nameError} />
@@ -98,30 +98,30 @@ class EventScreen extends Component {
                         </div>
                         <button 
                             type='submit'
-                            disabled={this.validateEventName()}>
+                            disabled={this.validateCompetitionName()}>
                             Submit
                         </button>
             </form>
         )
     }
 
-    selectEvent = () => {
-        const {events} = this.context;
-        const existingEvents = Object.values(events).map(event => 
-            <option key={event.id} value={event.id}>{event.name}</option>);
+    selectCompetition = () => {
+        const {competitions} = this.context;
+        const existingCompetitions = Object.values(competitions).map(competition => 
+            <option key={competition.id} value={competition.id}>{competition.name}</option>);
         return(
-                    <form className='select-event-form' onSubmit={e => this.handleSelect(e)}>
+                    <form className='select-competition-form' onSubmit={e => this.handleSelect(e)}>
                         <div className='field'>
-                            <label htmlFor='select-event'>
-                                Existing Events
+                            <label htmlFor='select-competition'>
+                                Existing Competitions
                             </label>
                             <select 
-                                id='event-select-input'
-                                name='event-name'
+                                id='competition-select-input'
+                                name='competition-name'
                                 className='select'
                             >
                                 <option value={null}>...</option>
-                                { existingEvents }
+                                { existingCompetitions }
                             </select>
                         </div>
                       
@@ -135,10 +135,10 @@ class EventScreen extends Component {
     renderForm = () => {
         const selected = this.state.choice.value;
         if(selected === 'select') {
-            return this.selectEvent();
+            return this.selectCompetition();
         }
         if(selected === 'register') {
-            return this.registerEvent();
+            return this.registerCompetition();
         }
         return;
     }
@@ -148,17 +148,18 @@ class EventScreen extends Component {
         return(
             <div className='page'>
                 <h1>Atlas</h1>
-                <h4>Create an event, or choose one that exists!</h4>
+                <h4>Register a competition, or choose one that exists!</h4>
                 <form className='form-selection'>
                     <div className='field'>
                         <select
-                            id='form-selection'
+                            id='category_type'
                             name='form-selection'
                             onChange={e => this.selectOrRegister(e.target.value)}
                             className='select'
                         >
-                            <option value='register'>Register New Event</option>
-                            <option value='select'>Select Existing Event</option>
+                            <option value=''>...</option>
+                            <option value='register'>Register New Competition</option>
+                            <option value='select'>Select Existing Competition</option>
                         </select>
                     </div>
                 </form>
@@ -169,4 +170,4 @@ class EventScreen extends Component {
     }
 }
 
-export default EventScreen;
+export default CompetitionScreen;

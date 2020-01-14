@@ -1,4 +1,4 @@
-.register-event-form {
+.register-competition-form {
     padding: 20px;
     margin: 20px;
     display: flex;
@@ -9,23 +9,23 @@
     height: 3em;
 }
 
-.register-event-form label {
+.register-competition-form label {
     display: flex;
     text-align: left;
 }
 
-.register-event-form input{
+.register-competition-form input{
     display: flex;
 }
 
-.register-event-form button {
+.register-competition-form button {
     width: 50%;
     display: flex;
     justify-content: center;
     margin-top: 15px;
 }
 
-.select-event-form {
+.select-competition-form {
     padding: 20px;
     margin: 20px;
     display: flex;
@@ -36,12 +36,12 @@
     height: 3em;
 }
 
-.select-event-form label {
+.select-competition-form label {
     display: flex;
     text-align: left;
 }
 
-.select-event-form button {
+.select-competition-form button {
     margin-top: 15px;
     width: 50%;
 }

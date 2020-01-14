@@ -20,14 +20,6 @@ class AddLifts extends Component {
             deadlift: {
                 value: '',
                 touched: false
-            },
-            athlete: {
-                value: '',
-                touched: false
-            },
-            total: {
-                value: '',
-                touched: false
             }
         }
     }
@@ -41,24 +33,19 @@ class AddLifts extends Component {
     }
     static contextType = AtlasContext;
 
-    totalLifts = () => {
-        const a = parseInt(this.state.squat.value)
-        const b = parseInt(this.state.bench.value)
-        const c = parseInt(this.state.deadlift.value)
-        return a + b + c;
-    }
-
     handleSubmit = e => {
         e.preventDefault();
+        
         const newLifts = {
-            squat: e.target['lift-squat'].value,
-            bench: e.target['lift-bench'].value,
-            deadlift: e.target['lift-deadlift'].value,
-            athlete: e.target['lift-athlete'].value,
-            event: this.props.match.params.eventId,
-            total: this.totalLifts()
+            squat: parseInt(e.target['lift-squat'].value),
+            bench: parseInt(e.target['lift-bench'].value),
+            deadlift: parseInt(e.target['lift-deadlift'].value),
+            athlete_id: parseInt(e.target['lift-athlete'].value),
+            competition_id: parseInt(this.props.match.params.competitionId),
+            total: (parseInt(this.state.squat.value) + parseInt(this.state.bench.value) + parseInt(this.state.deadlift.value))
         };
-        fetch(`${config.API_ENDPOINT}/lifts`, {
+        console.log(newLifts)
+        fetch(`${config.API_ENDPOINT}/api/lifts`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +61,7 @@ class AddLifts extends Component {
         })
         .then(lifts => {
             this.context.addAthlete(lifts)
-            this.props.history.push(`/events/:event_id`)
+            this.props.history.push(`/competitions/${newLifts.competition_id}`)
         })
         .catch(error => {
             console.error({error})
@@ -133,17 +120,18 @@ class AddLifts extends Component {
         }
     }
 
-    filteredAthletes = (athletes, eventId) => {
-        return Object.values(athletes).filter(athlete => athlete.event === eventId)
+    filteredAthletes = (athletes, competitionId) => {
+        const id = parseInt(competitionId)
+        return Object.values(athletes).filter(athlete => athlete.competition_id === id)
     }
 
     render() {
         const {athletes} = this.context;
-        const eventId = this.props.match.params.eventId;
+        const competitionId = this.props.match.params.competitionId;
         const squatError= this.validateSquat();
         const benchError = this.validateBench();
         const deadliftError = this.validateDeadlift();
-        const filteredAthletes = this.filteredAthletes(athletes, eventId);
+        const filteredAthletes = this.filteredAthletes(athletes, competitionId);
         return (
             <div className='page'>
                 <nav className='nav-bar'>
@@ -154,9 +142,9 @@ class AddLifts extends Component {
                                 Home
                             </button>
                         </Link>
-                        <Link to='/event'>
+                        <Link to='/competitions'>
                             <button type='button'>
-                                Events
+                                Competitions
                             </button>
                         </Link>
                     </div>
@@ -169,7 +157,7 @@ class AddLifts extends Component {
                                 Athlete
                             </label>
                             <select 
-                                id='lift-deadlift-input'
+                                id='category_type'
                                 name='lift-athlete'
                             >
                                 <option value={null}>...</option>

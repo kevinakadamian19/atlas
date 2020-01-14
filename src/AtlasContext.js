@@ -1,11 +1,12 @@
 import React from 'react'
 
 export default React.createContext({
-    events: {},
+    competitions: {},
     athletes: {},
     lifts: {},
     addAthlete: () => {},
     addLifts: () => {},
-    addEvent: () => {},
-    deleteAthlete: () => {}
+    addCompetition: () => {},
+    deleteAthlete: () => {},
+    deleteLift: () => {}
 })

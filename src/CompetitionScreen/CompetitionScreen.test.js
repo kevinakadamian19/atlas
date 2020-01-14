@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import EventScreen from './EventScreen';
+import CompetitionScreen from './CompetitionScreen';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<EventScreen />, div);
+  ReactDOM.render(<CompetitionScreen />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

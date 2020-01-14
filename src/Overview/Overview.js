@@ -54,20 +54,21 @@ class Overview extends Component {
        })
    }
 
-   filteredAthletes = (athletes, eventId) => {
-   
-    return Object.values(athletes).filter(athlete => athlete.event === eventId)
+   filteredAthletes = (athletes, competitionId) => {
+       const id = parseInt(competitionId)
+        return Object.values(athletes).filter(athlete => athlete.competition_id === id)
     }
 
-   filteredLifts = (lifts, eventId) => {
-        return Object.values(lifts).filter(lift => lift.event === eventId);
+   filteredLifts = (lifts, competitionId) => {
+       const id = parseInt(competitionId)
+        return Object.values(lifts).filter(lift => lift.competition_id === id);
     }
 
     render() {
         const {athletes, lifts} = this.context;
-        const eventId = this.props.match.params.eventId;
-        const filteredAthletes = this.filteredAthletes(athletes, eventId)
-        const filteredLifts = this.filteredLifts(lifts, eventId);
+        const competitionId = this.props.match.params.competitionId;
+        const filteredAthletes = this.filteredAthletes(athletes, competitionId)
+        const filteredLifts = this.filteredLifts(lifts, competitionId);
         const bestSquat = this.calculateBestSquat(filteredLifts);
         const bestBench = this.calculateBestBench(filteredLifts);
         const bestDeadlift = this.calculateBestDeadlift(filteredLifts);
@@ -81,9 +82,9 @@ class Overview extends Component {
                                 Home
                             </button>
                         </Link>
-                        <Link to='/event'>
+                        <Link to='/competitions'>
                             <button type='button'>
-                                Events
+                                Competitions
                             </button>
                         </Link>
                     </div>
@@ -112,7 +113,7 @@ class Overview extends Component {
                             </tr>
                         </tbody>
                     </table>
-                    <Link to={`/results/${eventId}`}>
+                    <Link to={`/results/${competitionId}`}>
                             <button type='button'>
                                 Results
                             </button>
@@ -143,12 +144,12 @@ class Overview extends Component {
                         </tbody>
                         </table>
                     <div className='overview-buttons'>
-                        <Link to={`/add-athlete/${eventId}`}>
+                        <Link to={`/add-athlete/${competitionId}`}>
                             <button type="button">
                                 Register Athlete
                             </button>
                         </Link>
-                        <Link to={`/add-lifts/${eventId}`}>
+                        <Link to={`/add-lifts/${competitionId}`}>
                             <button type='submit'>
                                 Submit Lifts
                             </button>

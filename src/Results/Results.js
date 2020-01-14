@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { Link } from 'react-router-dom'
 import AtlasContext from '../AtlasContext'
-import AthleteInfo from '../AthleteInfo/AthleteInfo'
+import AthleteInfo from '../Loader/Loader'
 import './Results.css'
 
 class Results extends Component {
@@ -15,8 +15,9 @@ class Results extends Component {
     }
     static contextType = AtlasContext;
 
-    filteredAthletes = (athletes, eventId) => {
-        return Object.values(athletes).filter(athlete => athlete.event === eventId)
+    filteredAthletes = (athletes, competitionId) => {
+        const id = parseInt(competitionId)
+        return Object.values(athletes).filter(athlete => athlete.competition_id === id)
     }
 
     calculateWilksScore = (obj) => {
@@ -31,7 +32,6 @@ class Results extends Component {
                 const d = -0.00113732 * x;
                 const e = 0.00000701863 * x;
                 const f = -0.00000001291 * x;
-                console.log(athletes)
                 const wilksScore = (athletes[i].lifts[0].total * 500) / (a + b + Math.pow(c,2) + Math.pow(d, 3) + Math.pow(e,4) + Math.pow(f, 5));
                 results[athletes[i].name] = wilksScore;
             }
@@ -65,8 +65,8 @@ class Results extends Component {
 
     render() {
         const {athletes} = this.context;
-        const eventId = this.props.match.params.eventId;
-        const filteredAthletes = this.filteredAthletes(athletes, eventId);
+        const competitionId = this.props.match.params.competitionId;
+        const filteredAthletes = this.filteredAthletes(athletes, competitionId);
         const calculateScore = this.calculateWilksScore(filteredAthletes);
         const winner = this.determineWinner(calculateScore)
         return(
@@ -79,9 +79,9 @@ class Results extends Component {
                                 Home
                             </button>
                         </Link>
-                        <Link to='/event'>
+                        <Link to='/competitions'>
                             <button type='button'>
-                                Events
+                                Competitions
                             </button>
                         </Link>
                     </div>

@@ -4,7 +4,7 @@ import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import AtlasContext from '../AtlasContext'
 import GetStarted from '../GetStarted/GetStarted'
 import Overview from '../Overview/Overview'
-import EventScreen from '../EventScreen/EventScreen'
+import CompetitionScreen from '../CompetitionScreen/CompetitionScreen'
 import AddAthlete from '../AddAthlete/AddAthlete'
 import AddLifts from '../AddLifts/AddLifts'
 import Results from '../Results/Results'
@@ -16,7 +16,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      event: {},
+      competition: {},
       athlete: {},
       lift: {}
     }
@@ -32,13 +32,13 @@ class App extends Component {
       };
 
       Promise.all([
-      fetch(`${config.API_ENDPOINT}/api/events`, options),
+      fetch(`${config.API_ENDPOINT}/api/competitions`, options),
       fetch(`${config.API_ENDPOINT}/api/athletes`, options),
       fetch(`${config.API_ENDPOINT}/api/lifts`, options)
     ])
-    .then(([eventsRes, athletesRes, liftsRes]) => {
-      if(!eventsRes) {
-        return eventsRes.json().then(e => Promise.reject(e))
+    .then(([competitionsRes, athletesRes, liftsRes]) => {
+      if(!competitionsRes) {
+        return competitionsRes.json().then(e => Promise.reject(e))
       }
       if(!athletesRes) {
         return athletesRes.json().then(e => Promise.reject(e))
@@ -47,21 +47,21 @@ class App extends Component {
         return liftsRes.json().then(e => Promise.reject(e))
       }
       return Promise.all([
-        eventsRes.json(),
+        competitionsRes.json(),
         athletesRes.json(),
         liftsRes.json()
       ])
     })
-    .then(([events, athletes, lifts]) => {
-      const event = events.reduce((acc, obj) => {
+    .then(([competitions, athletes, lifts]) => {
+      const competition = competitions.reduce((acc, obj) => {
         obj.athletes = athletes.reduce((acc, athlete) => {
-          if (athlete.event === obj.id) {
+          if (athlete.competition_id === obj.id) {
             acc.push(athlete.id)
           }
           return acc;
         }, []);
         obj.lifts = lifts.reduce((acc, lift) => {
-          if (lift.event === obj.id) {
+          if (lift.competition_id === obj.id) {
             acc.push(lift.id)
           }
           return acc;
@@ -69,28 +69,29 @@ class App extends Component {
         acc[obj.id] = obj;
         return acc;
       }, {})
-        const athlete = athletes.reduce((acc, obj) => {
-          obj.lifts = lifts.filter(lift => lift.athlete === obj.id)
-          acc[obj.id] = obj;
-          return acc;
-        }, {})
+
+      const athlete = athletes.reduce((acc, obj) => {
+        obj.lifts = lifts.filter(lift => lift.athlete_id === obj.id)
+        acc[obj.id] = obj;
+        return acc;
+      }, {})
         const lift = lifts.reduce((acc,obj) => {
           acc[obj.id] = obj;
           return acc;
         }, {})
 
-      this.setState({event, athlete, lift})
+      this.setState({competition, athlete, lift})
     })
     .catch(error => {
       console.error({error})
     })
   }
 
-  handleAddEvent = event => {
+  handleAddCompetition = competition => {
     this.setState({
-      events: {
-        ...this.state.event,
-        event
+      competitions: {
+        ...this.state.competition,
+        competition
       }
     })
   }
@@ -121,6 +122,14 @@ class App extends Component {
     })
   }
 
+  handleDeleteLift = liftId => {
+    const currentLifts = this.state.lift;
+    delete currentLifts[liftId]
+    this.setState({
+      lift: currentLifts
+    })
+  }
+
   renderRoutes() {
     return (
       <>
@@ -133,31 +142,31 @@ class App extends Component {
 
                 <Route
                   exact
-                  path='/events'
-                  component={EventScreen}
+                  path='/competitions'
+                  component={CompetitionScreen}
                 />
 
                 <Route
                   exact
-                  path='/events/:eventId'
+                  path='/competitions/:competitionId'
                   component={Overview}
                 />
 
                 <Route
                   exact
-                  path='/add-athlete/:eventId'
+                  path='/add-athlete/:competitionId'
                   component={AddAthlete}
                 />
 
                 <Route
                   exact
-                  path='/add-lifts/:eventId'
+                  path='/add-lifts/:competitionId'
                   component={AddLifts}
                 />
 
                 <Route
                   exact
-                  path='/results/:eventId'
+                  path='/results/:competitionId'
                   component={Results}
                 />
       </>
@@ -166,15 +175,15 @@ class App extends Component {
 
   render() {
     const contextValue = {
-      events: this.state.event,
+      competitions: this.state.competition,
       athletes: this.state.athlete,
       lifts: this.state.lift,
       addAthlete: this.handleAddAthlete,
       addLifts: this.handleAddLifts,
-      addEvent: this.handleAddEvent,
-      deleteAthlete: this.handleDeleteAthlete
+      addCompetition: this.handleAddCompetition,
+      deleteAthlete: this.handleDeleteAthlete,
+      deleteLift: this.handleDeleteLift
     }
-    console.log(this.state)
     return (
       <AtlasContext.Provider value={contextValue}>
         <div className='page'>

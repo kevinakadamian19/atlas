@@ -35,12 +35,11 @@ class AddAthlete extends Component {
     handleSubmit = e => {
         e.preventDefault();
         const newAthlete = {
-            id: '6',
             name: e.target['athlete-name'].value,
             age: e.target['athlete-age'].value,
             gender: e.target['athlete-gender'].value,
             weight: e.target['athlete-weight'].value,
-            event: this.props.match.params.eventId
+            competition_id: parseInt(this.props.match.params.competitionId)
         }
         fetch(`${config.API_ENDPOINT}/api/athletes`, {
             method: 'POST',
@@ -58,7 +57,7 @@ class AddAthlete extends Component {
         })
         .then(athlete => {
             this.context.addAthlete(athlete)
-            this.props.history.push(`/athletes/${athlete.id}`)
+            this.props.history.push(`/competitions/${newAthlete.competition_id}`)
         })
         .catch(error => {
             console.error({error})
@@ -75,9 +74,9 @@ class AddAthlete extends Component {
                                 Home
                             </button>
                         </Link>
-                        <Link to='/event'>
+                        <Link to='/competitions'>
                             <button type='button'>
-                                Events
+                                Competitions
                             </button>
                         </Link>
                     </div>
